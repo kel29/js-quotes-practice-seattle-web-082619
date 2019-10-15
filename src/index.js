@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const QUOTE_URL = "http://localhost:3000/quotes";
+const LIKE_URL = "http://localhost:3000/likes"
 const quoteList = document.getElementById('quote-list');
 
 function fetchQuotes() {
@@ -22,6 +23,7 @@ function displayQuote(quote) {
 
   const blockquote = document.createElement('blockquote');
   blockquote.classList.add("blockquote");
+  blockquote.id = quote.id;
 
   const p = document.createElement('p');
   p.classList.add("mb-0", 'mt-5');
@@ -35,12 +37,15 @@ function displayQuote(quote) {
 
   const successBtn = document.createElement("button");
   successBtn.classList.add('btn-success');
-  successBtn.innerHTML = "Likes: <span>"+ likesCount(quote) + "</span>";
+  successBtn.innerHTML = "Likes: <span>" + likesCount(quote) + "</span>";
+  successBtn.addEventListener('click', () => {
+    likeQuote(quote);
+  })
 
   const dangerBtn = document.createElement('button');
   dangerBtn.classList.add('btn-danger');
   dangerBtn.textContent = "Delete";
-  dangerBtn.addEventListener('click', () =>{
+  dangerBtn.addEventListener('click', () => {
     deleteQuote(quote)
   })
 
@@ -86,7 +91,29 @@ function likesCount(quote) {
   }
 }
 
+function likeQuote(quote) {
+  fetch(LIKE_URL, {
+    method: 'POST',
+    headers: {
+      "Content-Type": 'application/json',
+      Accept: 'application/json'
+    },
+    body: JSON.stringify({
+      quoteId: quote.id
+    })
+  })
+  .then(resp => resp.json())
+  .then(json => {
+    const currentQuote = document.getElementById(quote.id);
+    const likesSpan = currentQuote.querySelector('span');
+    let likes = parseInt(likesSpan.textContent, 10);
+    likes += 1;
+    likesSpan.textContent = likes;
+  });
+}
+
 function deleteQuote(quote) {
+  const currentQuote = document.getElementById(quote.id)
   fetch(QUOTE_URL + "/" + quote.id, {
     method: "DELETE",
     headers: {
@@ -98,5 +125,5 @@ function deleteQuote(quote) {
       author: quote.author
     })
   })
-  .then(console.log(quote))
+  .then(quoteList.removeChild(currentQuote))
 }

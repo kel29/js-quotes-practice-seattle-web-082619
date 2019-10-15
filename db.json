@@ -1,36 +1,71 @@
 {
   "quotes": [
     {
-      "id": 1,
-      "quote": "The here and now is all we have, and if we play it right it's all we'll need.",
-      "author": "Ann Richards"
-    },
-    {
-      "id": 7,
-      "quote": "Tell me and I forget, teach me and I remember, involve me and I learn.",
-      "author": "Benjamin Franklin"
-    },
-    {
-      "id": 8,
-      "quote": "Success is not final, failure is not fatal: it is the courage to continue that counts.",
-      "author": "Winston Churchhill"
-    },
-    {
       "id": 9,
       "quote": "Our greatest glory is not in never falling, but in rising everytime we fall.",
       "author": "Confucius"
-    },
-    {
-      "id": 10,
-      "quote": "You know, failure hurts. Any kind of failure stings. If you live in the sting, you will undoubtedly fail. My way of getting past the sting is to say no, I’m just not going to let this get me down.",
-      "author": "Sonia Sotomayor"
     }
   ],
   "likes": [
     {
-      "id": 1,
-      "quoteId": 1,
-      "createdAt": 1558524356
+      "quoteId": 9,
+      "id": 1
+    },
+    {
+      "quoteId": 9,
+      "id": 2
+    },
+    {
+      "quoteId": 9,
+      "id": 3
+    },
+    {
+      "quoteId": 9,
+      "id": 4
+    },
+    {
+      "quoteId": 9,
+      "id": 5
+    },
+    {
+      "quoteId": 9,
+      "id": 6
+    },
+    {
+      "quoteId": 9,
+      "id": 7
+    },
+    {
+      "quoteId": 9,
+      "id": 8
+    },
+    {
+      "quoteId": 9,
+      "id": 9
+    },
+    {
+      "quoteId": 9,
+      "id": 10
+    },
+    {
+      "quoteId": 9,
+      "id": 11
+    },
+    {
+      "quoteId": 9,
+      "id": 12
+    },
+    {
+      "quoteId": 9,
+      "id": 13
+    },
+    {
+      "quoteId": 9,
+      "id": 14
+    },
+    {
+      "quoteId": 9,
+      "id": 15
     }
   ]
 }
