@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   fetchQuotes();
+  addSortButton();
   addNewQuote();
 });
 
@@ -26,7 +27,7 @@ function displayQuote(quote) {
   blockquote.id = quote.id;
 
   const p = document.createElement('p');
-  p.classList.add("mb-0", 'mt-5');
+  p.classList.add("mb-0", 'mt-3');
   p.textContent = quote.quote;
 
   const footer = document.createElement('footer');
@@ -99,11 +100,12 @@ function likeQuote(quote) {
       Accept: 'application/json'
     },
     body: JSON.stringify({
-      quoteId: quote.id
+      quoteId: quote.id,
+      createdAt: new Date()
     })
   })
   .then(resp => resp.json())
-  .then(json => {
+  .then(() => {
     const currentQuote = document.getElementById(quote.id);
     const likesSpan = currentQuote.querySelector('span');
     let likes = parseInt(likesSpan.textContent, 10);
@@ -119,11 +121,58 @@ function deleteQuote(quote) {
     headers: {
       "Content-Type": 'application/json',
       Accept: 'application/json'
-    },
-    body: JSON.stringify({
-      quote: quote.quote,
-      author: quote.author
-    })
+    }
   })
-  .then(quoteList.removeChild(currentQuote))
+  .then(quoteList.removeChild(currentQuote));
+}
+
+function addSortButton() {
+  const sortBtn = document.createElement('button');
+  const sortDiv = document.getElementById('sort-button');
+  sortBtn.classList.add('btn-primary', 'mt-3', 'ml-4');
+  sortBtn.textContent = 'Sort by Author';
+  sortBtn.addEventListener('click', () => {
+    toggleSortButton(sortBtn);
+  })
+  sortDiv.appendChild(sortBtn);
+}
+
+function toggleSortButton(sortBtn) {
+  if (sortBtn.textContent === 'Sort by Author') {
+    sortBtn.classList.add('btn-secondary');
+    sortBtn.classList.remove('btn-primary');
+    sortBtn.textContent = 'Sort by Creation';
+    clearCurrentQuotes();
+    sortByAuthor();
+  } else {
+    sortBtn.classList.remove('btn-secondary');
+    sortBtn.classList.add('btn-primary');
+    sortBtn.textContent = 'Sort by Author';
+    clearCurrentQuotes();
+    sortByCreation();
+  }
+}
+
+function clearCurrentQuotes() {
+  while (quoteList.firstChild) {
+    quoteList.removeChild(quoteList.firstChild)
+  }
+}
+
+function sortByAuthor() {
+  fetch(QUOTE_URL + "?_embed=likes")
+  .then(resp => resp.json())
+  .then(json => {
+    const authorSort = json.sort((a, b) => (a.author > b.author) ? 1 : -1 );
+    iterateOverQuotes(authorSort);
+  })
+}
+
+function sortByCreation() {
+  fetch(QUOTE_URL + "?_embed=likes")
+  .then(resp => resp.json())
+  .then(json => {
+    const creationSort = json.sort((a, b) => (a.id > b.id) ? 1 : -1 );
+    iterateOverQuotes(creationSort)
+  })
 }
